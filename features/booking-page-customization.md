@@ -6,7 +6,24 @@ The booking page is the invitee's first impression of Schedica. Customization al
 
 ## Overview
 
-Every event type has a publicly accessible booking page. Above that, every host also has a **Profile Overview Page** listing all their event types. Customization ranges from basic (logo, colors) to advanced (custom domain, full white-labeling). The booking page must communicate trust and professionalism while remaining simple and fast to use.
+Every event type has a publicly accessible booking page. Above that, every host also has a **Profile Overview Page** listing all their event types. MVP customization covers brand color, logo, profile photo, and custom confirmation messages. Custom domain and full white-labeling are Phase 4 features. The booking page must communicate trust and professionalism while remaining simple and fast to use.
+
+---
+
+## User Stories
+
+**Host**
+- As a host, I want to add my profile photo and name to my booking page, so that invitees feel confident they are booking the right person. *(MVP)*
+- As a host, I want to set my brand color on my booking page, so that it feels consistent with my personal or company brand. *(MVP)*
+- As a host, I want to write a custom welcome message, so that invitees feel welcomed before they pick a time. *(MVP)*
+- As a host, I want to hide specific event types from my profile page, so that I can offer private links without showing them publicly. *(MVP)*
+- As a host, I want to redirect invitees to a custom URL after booking, so that I can send them to a thank-you page or onboarding form. *(Phase 2)*
+- As a host, I want to remove "Powered by Schedica" branding from my booking page, so that it feels fully like my own product. *(Standard plan+)*
+- As a host, I want to host my booking page on my own domain, so that the URL matches my website instead of showing schedica.com. *(Phase 4)*
+
+**Invitee**
+- As an invitee, I want the booking page to load quickly and look professional, so that I trust the host before booking. *(MVP)*
+- As an invitee, I want to see the host's photo, name, and bio on the booking page, so that I know who I am meeting. *(MVP)*
 
 ---
 
@@ -128,7 +145,7 @@ Shown to invitees immediately after successfully booking a meeting.
 
 ### Custom Confirmation Message
 - Replace default text with custom message
-- Supports basic HTML and emoji
+- Supports Markdown: `**bold**`, `[link text](url)`, line breaks
 - Example: "Thanks for booking! Please review our intake form before the call: [link]"
 
 ### Redirect to External URL

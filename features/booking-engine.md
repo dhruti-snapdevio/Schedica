@@ -16,6 +16,20 @@ The Booking Engine runs on every single booking and must be fast, reliable, and 
 
 ---
 
+## User Stories
+
+**Host**
+- As a host, I want the booking engine to prevent double-bookings in real-time, so that two invitees can never claim the same slot simultaneously. *(MVP)*
+- As a host, I want a booking to only be confirmed after all availability checks pass, so that I never receive a booking for a time I am unavailable. *(MVP)*
+- As a host, I want all post-booking tasks (calendar write, email, video link) to run in the background, so that the invitee gets an instant response without waiting. *(MVP)*
+
+**Invitee**
+- As an invitee, I want to receive clear feedback if a slot is taken while I am booking, so that I can immediately pick another available time. *(MVP)*
+- As an invitee, I want the booking process to complete quickly without page reloads, so that confirming my meeting feels fast and smooth. *(MVP)*
+- As an invitee, I want payment and booking to be handled together atomically, so that I am never charged for a meeting that was not confirmed. *(Phase 3)*
+
+---
+
 ## Booking Engine Flow (Step by Step)
 
 ### 1. Slot Selection
@@ -94,7 +108,7 @@ For round-robin event types, the engine assigns a host from the pool.
 
 **Atomic Operation:**
 - Assignment written to database in a transaction to prevent two concurrent bookings choosing the same host
-- Optimistic locking used to handle race conditions
+- PostgreSQL advisory lock used to handle race conditions
 
 ---
 
@@ -236,15 +250,18 @@ The booking engine returns a success response to the browser.
 
 The most critical reliability concern: two invitees trying to book the same slot simultaneously.
 
-### Optimistic Locking Strategy
-1. When invitee submits booking form, engine creates a "pending reservation" with 5-minute TTL
-2. Slot is temporarily locked for this session
-3. If payment/form processing takes > 5 minutes, lock expires and slot is released
-4. On booking completion: reservation upgraded to confirmed booking (atomic transaction)
-5. If another session tries to book same slot while reserved: receives "slot unavailable"
+### PostgreSQL Advisory Lock Strategy
+
+Schedica uses **PostgreSQL advisory locks** — a pessimistic locking approach that prevents two concurrent booking requests from both succeeding for the same slot.
+
+1. When an invitee submits the booking form, the engine calls `SELECT pg_advisory_xact_lock(slotHash)` where `slotHash` is a deterministic integer derived from `eventTypeId + startTime`
+2. The lock is held for the duration of the database transaction — any second request for the same slot blocks until the first transaction completes
+3. Inside the lock: perform the final availability check → if slot is free, insert booking record → commit
+4. Lock is released automatically when the transaction commits or rolls back (no manual release needed, no TTL to manage, no extra table required)
+5. If another session is waiting for the same lock: it runs its own check after the first commits — if the first succeeded, the slot is now taken and the second returns "slot unavailable"
 
 ### Database Transaction
-All booking creation steps (write booking record + calendar write trigger) run in a single database transaction. If any step fails, the entire transaction rolls back — no orphaned records.
+All booking creation steps (lock acquisition → availability check → booking insert → job enqueue) run in a single database transaction. If any step fails, the entire transaction rolls back — no orphaned records, no double-bookings.
 
 ---
 
@@ -271,6 +288,32 @@ All booking creation steps (write booking record + calendar write trigger) run i
 | `completed` | Meeting time has passed (no cancellation) |
 | `no_show` | Meeting time passed, marked as no-show by host |
 | `pending_payment` | Awaiting payment confirmation (paid events) |
+
+---
+
+## Rate Limiting on Public Booking Endpoints
+
+Booking pages are publicly accessible with no authentication required — making them a target for scraping, spam bookings, and slot-exhaustion attacks. Rate limiting must be applied at multiple layers.
+
+### Limits Applied
+
+| Endpoint | Limit | Scope | Action on Breach |
+|----------|-------|-------|-----------------|
+| `GET /[username]/[eventSlug]` — slot query | 60 requests / minute | Per IP | Return 429, show "Too many requests. Please wait." |
+| `POST /api/bookings` — booking creation | 5 bookings / hour | Per IP | Return 429, "Too many bookings from this device. Try again later." |
+| `POST /api/bookings` — booking creation | 3 bookings / hour | Per invitee email | Return 429, "You have recently made several bookings. Please wait before booking again." |
+| `GET /api/slots` — available slot fetch | 30 requests / minute | Per IP | Return 429 silently; cache last response |
+
+### Implementation
+- Rate limiting via **@upstash/ratelimit** with a Redis-backed sliding window
+- IP extracted from `x-forwarded-for` header (Vercel sets this behind the proxy)
+- Email-based limits applied after form submission — email is extracted from request body before booking is processed
+- Rate limit headers returned: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`
+
+### Spam Booking Protection
+- Email format validated with Zod before any DB write
+- Disposable email domain blocklist checked against known throwaway providers
+- CAPTCHA (hCaptcha or Cloudflare Turnstile) shown after 2 failed or suspicious submissions from the same IP — not shown by default to keep the flow frictionless for legitimate users
 
 ---
 
@@ -303,7 +346,7 @@ All booking creation steps (write booking record + calendar write trigger) run i
 
 **In MVP:**
 - Full 10-step booking flow (conflict check → calendar write → email)
-- Optimistic locking for race condition prevention
+- PostgreSQL advisory lock for race condition prevention (no extra table needed)
 - Google Calendar and Outlook write support
 - ICS file generation for invitees
 - Zoom and Google Meet link generation

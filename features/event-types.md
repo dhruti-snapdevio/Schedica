@@ -10,6 +10,24 @@ An event type is a reusable meeting template. Once created, it generates a booki
 
 ---
 
+## User Stories
+
+**Host**
+- As a host, I want to create a 1-on-1 event type with a custom duration, so that I have a ready-made booking link for standard client calls. *(MVP)*
+- As a host, I want to give each event type its own URL slug, so that I can share specific links for different meeting purposes. *(MVP)*
+- As a host, I want to set a different video platform per event type, so that some events use Zoom and others use Google Meet. *(MVP)*
+- As a host, I want to write a description for each event type, so that invitees understand what the meeting is for before they book. *(MVP)*
+- As a host, I want to hide an event type without deleting it, so that I can temporarily stop accepting bookings for it and re-enable it later. *(MVP)*
+- As a host, I want to offer multiple duration options on a single event type, so that invitees can choose a 30-min or 60-min slot based on their need. *(MVP)*
+- As a host, I want to create round-robin events that auto-assign bookings to team members, so that no single person gets overloaded with meetings. *(Phase 2)*
+- As a host, I want to create collective events that require all team members to be free simultaneously, so that group meetings only appear when everyone is available. *(Phase 2)*
+
+**Invitee**
+- As an invitee, I want to see a host's full list of event types on their profile page, so that I can pick the right meeting type for my purpose. *(MVP)*
+- As an invitee, I want to see the duration and description of an event type before picking a time, so that I know what I am signing up for. *(MVP)*
+
+---
+
 ## One-on-One Events
 
 The most common meeting type. One host, one invitee.
@@ -151,7 +169,7 @@ All event types share a common set of configuration options:
 | Duration | Length of the meeting |
 | URL Slug | Custom path for the booking link |
 | Color / Icon | Visual identifier in dashboard |
-| Status | Active / Draft / Archived |
+| Status | Active / Inactive |
 
 ### Location Options
 
@@ -160,8 +178,8 @@ All event types share a common set of configuration options:
 | Zoom | Auto-generate unique Zoom link per booking |
 | Google Meet | Auto-generate Google Meet link |
 | Microsoft Teams | Auto-generate Teams meeting link |
-| Webex | Auto-generate Webex meeting link |
-| GoTo Meeting | Auto-generate GoTo Meeting link |
+| Webex | Auto-generate Webex meeting link *(Phase 2)* |
+| GoTo Meeting | Auto-generate GoTo Meeting link *(Phase 2)* |
 | Phone — Host calls Invitee | Collect invitee's phone number; host calls them at meeting time |
 | Phone — Invitee calls Host | Host's phone number shown in confirmation; invitee calls in |
 | In-Person | Physical address displayed to invitee in confirmation |
@@ -214,7 +232,7 @@ Two distinct phone call variants exist:
   - Internal scheduling links for team use
   - Event types for specific campaigns (shared in email only)
 
-### Single-Use Booking Links
+### Single-Use Booking Links *(Phase 2)*
 - Generate a **one-time booking link** that expires after a single booking is made
 - Once used, the link returns "This booking link has expired" to anyone who visits it
 - Ideal for: sales outreach where only one prospect should book, controlled-access early-access slots
@@ -266,7 +284,7 @@ Two distinct phone call variants exist:
 - One event type can offer multiple duration choices
 - Example: "Consultation Call — 30 min / 45 min / 60 min"
 - Invitee selects duration on the booking page before seeing available slots
-- Price can vary per duration (if payment is enabled)
+- Price can vary per duration (if payment is enabled — Phase 3)
 - Availability windows recalculate based on selected duration
 
 ### Cancellation Policy Text and Enforcement
@@ -302,7 +320,7 @@ Two distinct phone call variants exist:
 
 **In MVP:**
 - One-on-One event types
-- Group event types (limited capacity per slot)
+- One-on-One event types only *(Group, Round-Robin, Collective are Phase 2)*
 - Full configuration: name, duration, location, availability, questions, cancellation policy
 - Active / Inactive toggle
 - Hidden / Secret event types (bookable via direct link only)
