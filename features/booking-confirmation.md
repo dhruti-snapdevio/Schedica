@@ -30,7 +30,6 @@ Done well, a confirmation email makes both host and invitee feel confident the m
 - As an invitee, I want to see the host's timezone alongside mine, so that I am confident we are both expecting the same time. *(MVP)*
 - As an invitee, I want "Add to Calendar" buttons on the confirmation page, so that I can save the meeting to my calendar with one click. *(MVP)*
 - As an invitee, I want a confirmation email with a reschedule and cancel link, so that I can change plans without contacting the host directly. *(MVP)*
-- As an invitee, I want a payment receipt included in the confirmation email if I paid for the meeting, so that I have a record of the transaction. *(Phase 3)*
 
 ---
 
@@ -136,7 +135,7 @@ Team size: 45
 
 **Section 6 — Footer**
 - Host's reply-to email address
-- "Powered by Schedica" (hidden on paid plans)
+- No "Powered by Schedica" branding shown (open source)
 - Unsubscribe link (GDPR/CAN-SPAM compliant)
 
 ---
@@ -243,11 +242,6 @@ This means even users who read the calendar event description (without relying o
 - Invitee's confirmation shows all host names: "You'll be meeting with Jane Smith and Mike Lee"
 - All hosts added as attendees on the calendar event
 
-### Paid Event Confirmation *(Phase 3)*
-- Payment receipt included in the confirmation email
-- "Payment of $150.00 received" shown in confirmation screen and email
-- Stripe/PayPal receipt also sent separately by the payment processor
-
 ---
 
 ## Confirmation Page for Redirect (Advanced)
@@ -256,7 +250,6 @@ Instead of Schedica's default confirmation screen, hosts can redirect invitees t
 
 **Use Cases:**
 - Redirect to an onboarding page: "Now that you've booked, here's what to expect"
-- Redirect to a payment page (before payment integration is live)
 - Trigger a Pixel event on a custom page for ad tracking
 - Redirect to a community or product portal
 
@@ -345,7 +338,7 @@ Instead of Schedica's default confirmation screen, hosts can redirect invitees t
 - Pixel tracking on custom confirmation page
 - Open/bounce tracking
 - Group event invitee count display
-- Paid event payment receipt in confirmation (Phase 3)
+- Round-robin and collective event type confirmations (Phase 2)
 
 
 ---

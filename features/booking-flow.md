@@ -110,7 +110,7 @@ The booking flow eliminates the email back-and-forth of "when are you free?" by 
 
 Schedica goes beyond Calendly by not just displaying a policy — it can **actively enforce** cancellation rules.
 
-### Policy Text (All Plans)
+### Policy Text
 Hosts can add cancellation policy text shown on the booking page and in confirmation emails:
 > "Cancellations must be made at least 24 hours before the meeting."
 
@@ -225,7 +225,7 @@ For events requiring multiple hosts to be present:
 
 | App | Booking Steps | Cancel / Reschedule (no login) | Cancellation Enforced | Calendar Overlay | Group Booking |
 |-----|--------------|-------------------------------|----------------------|-----------------|---------------|
-| **Calendly** | Date → time → form → confirm | ✅ Token links in email | ❌ Policy text shown only — never enforced | ❌ No | ✅ Paid plans |
+| **Calendly** | Date → time → form → confirm | ✅ Token links in email | ❌ Policy text shown only — never enforced | ❌ No | ✅ Paid plans only |
 | **Cal.com** | Same as Calendly | ✅ Token links | ❌ Policy text only | ❌ No | ✅ Yes |
 | **SavvyCal** | Date → time (with calendar overlay) → form → confirm | ✅ Token links | ❌ No | ✅ **Yes** — invitee connects their calendar to see mutual free times | ❌ No |
 | **Chili Piper** | Embedded form → instant calendar popup → confirm | ✅ Via email link | ❌ No | ❌ No | ✅ Yes |
@@ -249,7 +249,7 @@ For events requiring multiple hosts to be present:
 - Timezone auto-detection for invitee
 - Custom intake questions on booking form
 
-> **Calendly comparison:** Calendly displays cancellation policy text but does not enforce it — any invitee can cancel at any time regardless of the stated policy. Schedica actually blocks the cancel link when the window has passed, which is a key differentiator for paid sessions, coaching calls, and high-value demos.
+> **Calendly comparison:** Calendly displays cancellation policy text but does not enforce it — any invitee can cancel at any time regardless of the stated policy. Schedica actually blocks the cancel link when the window has passed, which is a key differentiator for coaching calls, high-value demos, and any meeting where last-minute cancellations are disruptive.
 
 **Post-MVP:**
 - Calendar overlay (invitee connects own calendar to see mutual free times)

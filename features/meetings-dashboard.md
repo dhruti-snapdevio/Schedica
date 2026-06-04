@@ -26,7 +26,6 @@ The Meetings Dashboard answers all of these. It is the first screen a returning 
 - As a host, I want to filter meetings by status — upcoming, past, cancelled — so that I can find what I need without scrolling through everything. *(MVP)*
 - As a host, I want to search meetings by invitee name or event type, so that I can quickly locate a specific booking. *(MVP)*
 - As a host, I want to add private notes to past meetings, so that I can log outcomes and follow-up actions for my own records. *(MVP)*
-- As a host, I want to see payment status on each booking, so that I know which meetings have been paid for. *(Phase 3)*
 
 ---
 
@@ -129,7 +128,6 @@ Clicking any meeting (upcoming or past) opens the full detail view.
 - When the meeting was booked
 - If it was rescheduled, when and by whom
 - If cancelled, when and by whom and the reason
-- Payment status (if paid event type — Phase 3)
 
 ---
 

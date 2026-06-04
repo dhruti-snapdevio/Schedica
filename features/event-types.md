@@ -284,7 +284,7 @@ Two distinct phone call variants exist:
 - One event type can offer multiple duration choices
 - Example: "Consultation Call — 30 min / 45 min / 60 min"
 - Invitee selects duration on the booking page before seeing available slots
-- Price can vary per duration (if payment is enabled — Phase 3)
+- Availability windows recalculate based on selected duration
 - Availability windows recalculate based on selected duration
 
 ### Cancellation Policy Text and Enforcement
@@ -312,7 +312,7 @@ Two distinct phone call variants exist:
 | **Chili Piper** | Instant Booker (1:1), Handoff (chained meetings); specialized for sales | N/A (paid only) | ❌ No | ❌ No |
 | **HubSpot Meetings** | 1:1 links, Group, Round Robin; tied to HubSpot deal pipeline | 1 link (free CRM) | ❌ No | ❌ No |
 | **SavvyCal** | Unlimited links per plan; supports multiple durations on single link | Unlimited | ❌ No | ✅ Yes |
-| **Schedica** | Same 4 types; unlimited on all paid plans; deliberate free tier decision | **Unlimited on paid; 3 on free** — more generous than Calendly | ✅ Yes — up to 10 additional attendees | ✅ Yes — multiple durations per event type |
+| **Schedica** | Same 4 types; unlimited event types for all users (open source) | Unlimited | ✅ Yes — up to 10 additional attendees | ✅ Yes — multiple durations per event type |
 
 ---
 
@@ -328,10 +328,7 @@ Two distinct phone call variants exist:
 - Invitee can add additional guests (up to 10)
 - Multiple durations per single event type
 - Drag-and-drop reorder on profile page
-- **Free tier: 3 event types** — more generous than Calendly (1 on free), less than Cal.com (unlimited)
-- **Paid tier: Unlimited event types**
-
-> **Calendly vs Schedica free tier:** Calendly's free plan restricts users to 1 active event type, which forces many users onto paid plans for basic use. Schedica's free tier allows 3 event types — enough for most solopreneurs to be productive without paying.
+- **Unlimited event types for all users** (open source — no plan restrictions)
 
 **Post-MVP:**
 - Round-robin event types (requires Phase 2 Teams feature)

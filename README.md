@@ -14,11 +14,11 @@ Schedica is inspired by the best of the scheduling market — the simplicity of 
 
 | Segment | Use Case |
 |---------|----------|
-| Freelancers / Solopreneurs | Simple booking links, payment collection |
+| Freelancers / Solopreneurs | Simple booking links, self-scheduling |
 | Sales Teams | Lead routing, round-robin assignment |
 | Customer Success | Client onboarding, support call scheduling |
 | Recruiters | Interview scheduling, multi-interviewer collective events |
-| Consultants / Coaches | Paid sessions, package bookings |
+| Consultants / Coaches | Session scheduling, package bookings |
 | Enterprises | Team workspaces, SSO, compliance, advanced routing |
 
 ---
@@ -127,9 +127,8 @@ Schedica is organized around five core pillars:
 - Post-meeting follow-up emails *(Phase 2)*
 - Webhook triggers for any event *(Phase 2)*
 
-### 5. Revenue & Growth
+### 5. Insights & Growth
 - Lead qualification routing forms *(Phase 2)*
-- Stripe / PayPal payment collection at booking *(Phase 3)*
 - Analytics dashboard to track meeting performance *(Phase 2)*
 
 ---
@@ -171,7 +170,6 @@ The MVP focuses on delivering a complete solo + small team scheduling experience
 | 2 | Analytics Dashboard | Meeting stats, cancellation rates, no-show tracking |
 | 2 | Webhooks | Send booking data to external apps in real-time |
 | 2 | AI Notetaker | Auto-join, record, transcribe, summarize with action items |
-| 3 | Payments | Collect payment via Stripe / PayPal at time of booking |
 | 3 | Browser Extension | Chrome/Outlook extension; share times directly in Gmail |
 | 3 | Calendar Overlay | Invitees see mutual availability (SavvyCal-style) |
 | 3 | Mobile App | iOS & Android native apps |
@@ -196,7 +194,7 @@ The MVP focuses on delivering a complete solo + small team scheduling experience
 | **HubSpot Meetings** | Native CRM integration | Tied to HubSpot; basic features on free tier |
 | **SavvyCal** | Best booking UX (calendar overlay) | No free tier; small ecosystem |
 
-**Schedica's positioning:** A polished, affordable scheduling platform with SavvyCal-quality UX, Calendly-level features, and Chili Piper-inspired lead routing — at a price accessible to growing teams.
+**Schedica's positioning:** A polished, open source scheduling platform with SavvyCal-quality UX, Calendly-level features, and Chili Piper-inspired lead routing — free for everyone to use and self-host.
 
 
 
@@ -292,7 +290,7 @@ schedica/
 ├── features/                             # Feature documentation (17 files)
 │   │
 │   ├── — Platform —
-│   ├── billing.md                        # Plan tiers (Free/Standard/Pro), feature gates, upgrade flow, Stripe (Phase 3)
+│   ├── billing.md                        # Open source — no billing, no plans, all features free
 │   │
 │   ├── — Account & Profile —
 │   ├── user-onboarding.md                # Sign-up, sign-in, email verification, password reset, OAuth, onboarding wizard
@@ -326,10 +324,10 @@ schedica/
 1. **Apple Calendar Support** — Native iCloud/Apple Calendar sync; Calendly dropped this in August 2024
 2. **Both Timezones in Every Email** — Confirmation and reminder emails show the invitee's time AND the host's time; Calendly only shows one timezone
 3. **Cancellation Policy Enforcement** — Calendly only displays policy text; Schedica actually blocks cancellations within the configured window
-4. **Free Custom Questions** — 3 intake questions on the free plan; Calendly gives 0 on free
+4. **Unlimited Custom Questions** — No limits on intake questions; Calendly restricts questions behind paid plans
 5. **Multi-Duration Event Types** — One booking link can offer 15, 30, and 60-min options; invitee picks at booking time
 6. **Meeting Overload Protection** — Daily meeting limits, buffer times, and minimum notice periods prevent back-to-back burnout
-7. **Transparent Pricing** — Per-feature tiers; key features not locked behind per-seat enterprise plans
+7. **Fully Open Source** — All features free, self-hostable, no paywalls or plan tiers
 
 ---
 

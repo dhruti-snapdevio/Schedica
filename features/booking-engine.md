@@ -26,7 +26,6 @@ The Booking Engine runs on every single booking and must be fast, reliable, and 
 **Invitee**
 - As an invitee, I want to receive clear feedback if a slot is taken while I am booking, so that I can immediately pick another available time. *(MVP)*
 - As an invitee, I want the booking process to complete quickly without page reloads, so that confirming my meeting feels fast and smooth. *(MVP)*
-- As an invitee, I want payment and booking to be handled together atomically, so that I am never charged for a meeting that was not confirmed. *(Phase 3)*
 
 ---
 
@@ -45,7 +44,7 @@ Invitee selects a date and time from the booking page.
 
 ### 2. Real-Time Conflict Check
 
-Before showing the payment/form page, re-verify availability.
+Before showing the form page, re-verify availability.
 
 **Why Real-Time Check?**
 - Availability on the booking page may be cached (up to 5 minutes old)
@@ -79,22 +78,7 @@ Invitee submits name, email, and custom question answers.
 
 ---
 
-### 4. Payment Processing (If Paid Event Type)
-
-If the event type requires payment, the engine waits for payment confirmation before proceeding.
-
-> **Note:** Payment collection (Stripe / PayPal) is a Phase 3 post-MVP feature. The engine is designed to support it via the steps below, but it is not active in the MVP.
-
-**Engine Actions:**
-- Create a Stripe PaymentIntent for the meeting price
-- Wait for client-side Stripe.js to confirm payment
-- On payment success: receive `payment_intent_id` from Stripe
-- On payment failure: return error; booking not created; slot remains available
-- Booking record stores `payment_id` and `payment_amount` once payments are active
-
----
-
-### 5. Host Assignment (Round-Robin Only)
+### 4. Host Assignment (Round-Robin Only)
 
 For round-robin event types, the engine assigns a host from the pool.
 
@@ -112,7 +96,7 @@ For round-robin event types, the engine assigns a host from the pool.
 
 ---
 
-### 6. Create Booking Record
+### 5. Create Booking Record
 
 The booking is written to the Schedica database.
 
@@ -132,8 +116,6 @@ The booking is written to the Schedica database.
 | location_type | zoom / meet / teams / phone / in_person / custom |
 | location_value | Generated video link or address |
 | custom_answers | JSON map of question ID → answer |
-| payment_id | Stripe PaymentIntent ID (if paid) |
-| payment_amount | Amount charged in cents |
 | status | confirmed / cancelled / rescheduled / completed |
 | created_at | Booking creation timestamp (UTC) |
 | cancel_token | Unique token for cancel link in email |
@@ -141,7 +123,7 @@ The booking is written to the Schedica database.
 
 ---
 
-### 7. Generate Video Conference Link
+### 6. Generate Video Conference Link
 
 If location type is Zoom, Google Meet, or Teams, generate a unique link.
 
@@ -169,7 +151,7 @@ If location type is Zoom, Google Meet, or Teams, generate a unique link.
 
 ---
 
-### 8. Write to Calendar
+### 7. Write to Calendar
 
 Add the meeting to the host's calendar (and optionally invitee's calendar).
 
@@ -204,7 +186,7 @@ POST /calendars/{calendarId}/events
 
 ---
 
-### 9. Send Confirmation Emails
+### 8. Send Confirmation Emails
 
 Send confirmation emails to both host and invitee.
 
@@ -226,7 +208,7 @@ Send confirmation emails to both host and invitee.
 
 ---
 
-### 10. Booking Confirmation Response
+### 9. Booking Confirmation Response
 
 The booking engine returns a success response to the browser.
 
@@ -270,7 +252,6 @@ All booking creation steps (lock acquisition → availability check → booking 
 | Step | Failure Handling |
 |------|-----------------|
 | Conflict check | Fail-safe: return unavailable if check errors |
-| Payment processing | Stripe handles retries; booking not created on failure |
 | Host assignment | Return error to invitee if no host available |
 | Calendar write | Retry 3× with backoff; notify host if all retries fail |
 | Video link generation | Retry 2×; booking created without link if fails |
@@ -287,7 +268,6 @@ All booking creation steps (lock acquisition → availability check → booking 
 | `rescheduled` | Original booking replaced by new one |
 | `completed` | Meeting time has passed (no cancellation) |
 | `no_show` | Meeting time passed, marked as no-show by host |
-| `pending_payment` | Awaiting payment confirmation (paid events) |
 
 ---
 
@@ -331,14 +311,14 @@ Booking pages are publicly accessible with no authentication required — making
 
 ## Reference Implementations
 
-| App | Race Condition Protection | Real-Time Conflict Check | Post-Booking Jobs Async | Slot-Taken Error Message | Payment + Booking Atomic |
+| App | Race Condition Protection | Real-Time Conflict Check | Post-Booking Jobs Async | Slot-Taken Error Message |
 |-----|--------------------------|-------------------------|------------------------|--------------------------|--------------------------|
-| **Calendly** | ✅ Industry benchmark; no double-bookings reported | ✅ Re-checks at form submit | Partial | Generic "time no longer available" | N/A — payments via redirect |
-| **Cal.com** | ✅ Atomic booking via open-source engine | ✅ Yes | ✅ Queue-based | Generic message | ✅ Stripe PaymentElement |
-| **SavvyCal** | ✅ Yes | ✅ Yes | ✅ Yes | Generic message | ❌ No payments |
-| **Chili Piper** | ✅ Optimised for high-volume inbound leads | ✅ Near real-time | ✅ Yes | ✅ With alternative slot suggestion | N/A |
-| **HubSpot Meetings** | ✅ Yes | ✅ Yes | ✅ Yes | Generic message | ❌ No payments |
-| **Schedica** | ✅ PostgreSQL advisory lock — concurrent bookings for same slot cannot both succeed | ✅ Final check inside DB transaction before insert | ✅ All post-booking work (video link, calendar write, confirmation email, reminder scheduling) runs as pg-boss jobs after transaction commits — booking API responds instantly | ✅ Clear message + highlights alternative available slots on the same page | ✅ Phase 3 — payment and booking in single transaction (no orphaned charges) |
+| **Calendly** | ✅ Industry benchmark; no double-bookings reported | ✅ Re-checks at form submit | Partial | Generic "time no longer available" |
+| **Cal.com** | ✅ Atomic booking via open-source engine | ✅ Yes | ✅ Queue-based | Generic message |
+| **SavvyCal** | ✅ Yes | ✅ Yes | ✅ Yes | Generic message |
+| **Chili Piper** | ✅ Optimised for high-volume inbound leads | ✅ Near real-time | ✅ Yes | ✅ With alternative slot suggestion |
+| **HubSpot Meetings** | ✅ Yes | ✅ Yes | ✅ Yes | Generic message |
+| **Schedica** | ✅ PostgreSQL advisory lock — concurrent bookings for same slot cannot both succeed | ✅ Final check inside DB transaction before insert | ✅ All post-booking work (video link, calendar write, confirmation email, reminder scheduling) runs as pg-boss jobs after transaction commits — booking API responds instantly | ✅ Clear message + highlights alternative available slots on the same page |
 
 ---
 

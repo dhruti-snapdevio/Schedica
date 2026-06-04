@@ -416,7 +416,7 @@ Both hosts and invitees can manage notification preferences.
 | **Chili Piper** | Instant alerts to Slack/email for new leads; less focus on invitee reminders | ❌ No | ❌ No | ❌ No |
 | **HubSpot Meetings** | Basic confirmations only; follow-up via HubSpot workflows | ❌ No | ❌ No | ❌ No |
 | **SavvyCal** | ✅ Premium plan; email reminders | Limited | ❌ No | ❌ No |
-| **Schedica** | ✅ All paid plans; 24hr + 1hr in MVP; full workflow builder (Phase 2) | ✅ Phase 2 | ✅ **Both timezones in every email** — key differentiator | ✅ Phase 2 |
+| **Schedica** | ✅ All users; 24hr + 1hr in MVP; full workflow builder (Phase 2) — open source, no plan gating | ✅ Phase 2 | ✅ **Both timezones in every email** — key differentiator | ✅ Phase 2 |
 
 ---
 
@@ -435,7 +435,7 @@ Both hosts and invitees can manage notification preferences.
 - Custom confirmation message and subject lines (per event type)
 - From name and reply-to customisation
 
-> **Calendly free plan:** Calendly does not include reminder workflows on the free plan — they require a paid plan. Schedica includes 24hr and 1hr email reminders on all plans including free.
+> **Comparison:** Calendly requires a paid plan for reminder workflows. Schedica includes 24hr and 1hr email reminders for all users — no plan required (open source).
 
 **Post-MVP:**
 - SMS reminders (Phase 2)

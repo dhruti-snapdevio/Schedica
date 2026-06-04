@@ -18,7 +18,7 @@ Every event type has a publicly accessible booking page. Above that, every host 
 - As a host, I want to write a custom welcome message, so that invitees feel welcomed before they pick a time. *(MVP)*
 - As a host, I want to hide specific event types from my profile page, so that I can offer private links without showing them publicly. *(MVP)*
 - As a host, I want to redirect invitees to a custom URL after booking, so that I can send them to a thank-you page or onboarding form. *(Phase 2)*
-- As a host, I want to remove "Powered by Schedica" branding from my booking page, so that it feels fully like my own product. *(Standard plan+)*
+- As a host, I want to remove "Powered by Schedica" branding from my booking page, so that it feels fully like my own product. *(MVP)*
 - As a host, I want to host my booking page on my own domain, so that the URL matches my website instead of showing schedica.com. *(Phase 4)*
 
 **Invitee**
@@ -44,7 +44,7 @@ The profile overview page is the host's "home" page — it shows all active even
 - **Event type order:** Drag-and-drop reorder; appears in the same order for invitees
 - **Color coding:** Each event type shows its assigned color as a visual accent
 - **Branding:** Logo and brand color applied across the profile page
-- **Remove Schedica branding:** "Powered by Schedica" badge removed on paid plans
+- **Remove Schedica branding:** "Powered by Schedica" badge not shown (open source)
 
 ### Event Type Card Contents (Profile Page)
 Each card on the profile page shows:
@@ -127,7 +127,7 @@ Hosts add questions to the booking form to collect information before the meetin
 
 **Summary of supported types:** Short Text, Long Text, Phone Number, Single Select, Multiple Select, Dropdown, Number, Date Picker, URL.
 
-**Limits:** Up to 20 questions per event type (plan-dependent); Name and Email are always required system fields.
+**Limits:** Up to 20 questions per event type; Name and Email are always required system fields.
 
 ---
 
@@ -152,7 +152,6 @@ Shown to invitees immediately after successfully booking a meeting.
 - Instead of showing Schedica's confirmation page, redirect invitees to a custom URL
 - Use cases:
   - Redirect to onboarding page
-  - Redirect to payment page (before Stripe integration is active)
   - Redirect to a "next steps" landing page
   - Trigger marketing pixel events
 
@@ -189,8 +188,7 @@ Confirmation, reminder, and follow-up emails can be customized.
 For agencies, enterprises, and tools built on Schedica.
 
 ### Remove Schedica Branding
-- "Powered by Schedica" badge removed from booking pages and emails
-- Available on paid plans
+- "Powered by Schedica" badge not shown on booking pages or emails (open source — no attribution required)
 
 ### Custom Domain
 - Host booking pages on your own domain
@@ -300,21 +298,21 @@ To support multiple languages:
 | **SavvyCal** | ✅ Colors, banners, avatars | ✅ On paid plan | ❌ No | ❌ No |
 | **Chili Piper** | Minimal — routing-focused | N/A | ❌ No | ❌ No |
 | **HubSpot Meetings** | Inherits HubSpot portal branding | ❌ No standalone control | ❌ No | ❌ No |
-| **Schedica** | ✅ Logo, colors, banner, profile photo | Paid plan (Standard+) — same tier as Calendly | Phase 4 (Enterprise) | Phase 2 (per event type) |
+| **Schedica** | ✅ Logo, colors, banner, profile photo | ✅ Open source — free for all | Phase 4 | Phase 2 (per event type) |
 
 ---
 
 ## MVP Scope
 
 **In MVP:**
-- Profile photo upload (all plans)
-- Organization logo upload (all plans)
-- Brand primary colour (all plans)
-- Event type name and description with markdown (all plans)
-- Default confirmation page with reschedule/cancel links (all plans)
-- Custom confirmation message per event type (all plans)
-- Email from-name and reply-to customisation (all plans)
-- **Remove Schedica branding — Standard plan and above** — same tier as Calendly's Standard ($10/mo); not available on free plan
+- Profile photo upload
+- Organization logo upload
+- Brand primary colour
+- Event type name and description with markdown
+- Default confirmation page with reschedule/cancel links
+- Custom confirmation message per event type
+- Email from-name and reply-to customisation
+- No "Powered by Schedica" branding (open source — available to all)
 
 **Post-MVP:**
 - Banner / cover image (Phase 2)

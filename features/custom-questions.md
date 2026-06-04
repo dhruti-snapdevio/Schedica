@@ -118,15 +118,7 @@ For each question, the host can configure:
 
 ## Question Limits
 
-| Plan | Max Questions per Event Type | Calendly Equivalent |
-|------|------------------------------|-------------------|
-| **Free** | 3 | Calendly Free: 0 custom questions (none allowed) |
-| **Standard** | 10 | Calendly Standard: up to 10 questions |
-| **Pro / Teams** | 20 | Calendly Teams: up to 10 questions (Schedica offers more) |
-
-> **Calendly comparison:** Calendly's free plan does not allow any custom intake questions — every field beyond Name and Email requires a paid plan. Schedica's free plan allows 3 custom questions, giving solo users meaningful intake capability without paying.
-
-The default system fields (Name, Email) do not count toward this limit.
+Up to 20 custom questions per event type. The default system fields (Name, Email) do not count toward this limit. All users have the same limit — there are no plan tiers.
 
 ---
 
@@ -259,14 +251,14 @@ Client-side and server-side validation:
 
 ## Reference Implementations
 
-| App | Free Plan Questions | Max Questions (Paid) | Question Types | Pre-fill via URL | Routing from Answers | CRM Field Mapping |
+| App | Questions on Base Plan | Max Questions | Question Types | Pre-fill via URL | Routing from Answers | CRM Field Mapping |
 |-----|--------------------|--------------------|----------------|-----------------|---------------------|-------------------|
 | **Calendly** | ❌ None allowed | 10 | Text, phone, radio, checkbox, dropdown | ✅ Yes | ✅ On radio/dropdown (paid) | ❌ No native mapping |
 | **Cal.com** | ✅ Unlimited | Unlimited | Same + date, number, URL | ✅ Yes | ✅ Yes | ❌ No |
 | **SavvyCal** | ✅ Basic | Limited | Text, checkbox, dropdown | ❌ No | ❌ No | ❌ No |
 | **Chili Piper** | N/A (paid only) | Unlimited | Text, radio, dropdown | ✅ Yes | ✅ Core feature — routing is the main purpose | ✅ Salesforce native |
 | **HubSpot Meetings** | ✅ Yes | Limited | Maps to HubSpot contact properties | ✅ Via URL params | ❌ No | ✅ Auto-syncs to HubSpot contact |
-| **Schedica** | ✅ **3 questions free** (Calendly: 0) | 10 (Standard), 20 (Pro/Teams) | Text, long text, phone, single/multi select, dropdown, number (MVP); date, URL (Phase 2) | ✅ Via URL params (MVP); JS embed (Phase 2) | ✅ Phase 2 — routing forms | ❌ No |
+| **Schedica** | ✅ Unlimited (open source — no plan tiers) | 20 (all users) | Text, long text, phone, single/multi select, dropdown, number (MVP); date, URL (Phase 2) | ✅ Via URL params (MVP); JS embed (Phase 2) | ✅ Phase 2 — routing forms | ❌ No |
 
 ---
 
@@ -274,8 +266,7 @@ Client-side and server-side validation:
 
 **In MVP:**
 - Question types: Short Text, Long Text, Phone Number, Single Select, Multiple Select, Dropdown, Number
-- **Free plan: 3 questions per event type** (Calendly free: 0 — Schedica is more generous)
-- **Standard plan: 10 questions per event type** (matches Calendly Standard)
+- Up to 20 questions per event type (all users — no plan restrictions)
 - Required / optional toggle per question
 - Help text and placeholder text per question
 - Drag-and-drop reordering
@@ -287,7 +278,6 @@ Client-side and server-side validation:
 **Post-MVP:**
 - Date picker question type (Phase 2)
 - URL / website question type (Phase 2)
-- Up to 20 questions on Pro / Teams plan (Phase 2)
 - Pre-fill via JavaScript embed (Phase 2)
 - Routing-compatible questions — routing forms (Phase 2)
 

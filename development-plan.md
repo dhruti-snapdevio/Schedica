@@ -54,7 +54,7 @@ Phase 14 →  Booking Confirmation
 Phase 15 →  Notifications & Reminders
 Phase 16 →  Meetings Dashboard
 Phase 17 →  Cancellation & Reschedule
-Phase 18 →  Admin Panel
+Phase 18 →  Open Source Configuration
 Phase 19 →  QA & Launch Prep
 ```
 
@@ -215,17 +215,9 @@ Phase 19 →  QA & Launch Prep
   - [ ] `video_connections` — id, userId, provider (zoom/teams), accountEmail, accessToken, refreshToken, tokenExpiresAt, providerUserId, createdAt
 
   **`bookings.ts` — Booking records:**
-  - [ ] `bookings` — id, eventTypeId, hostUserId, inviteeName, inviteeEmail, inviteePhone, inviteeTimezone, startTime, endTime, status (confirmed/cancelled/rescheduled/completed/no_show/pending_payment), locationValue, videoLinkHost, videoLinkInvitee, cancelToken, rescheduleToken, cancellationReason, cancelledAt, rescheduledFromId, paymentId, paymentAmount, createdAt, updatedAt
+  - [ ] `bookings` — id, eventTypeId, hostUserId, inviteeName, inviteeEmail, inviteePhone, inviteeTimezone, startTime, endTime, status (confirmed/cancelled/rescheduled/completed/no_show), locationValue, videoLinkHost, videoLinkInvitee, cancelToken, rescheduleToken, cancellationReason, cancelledAt, rescheduledFromId, createdAt, updatedAt
   - [ ] `booking_answers` — id, bookingId, questionId, questionLabel, answer
   - [ ] `booking_guests` — id, bookingId, guestEmail, guestName
-
-  **`billing.ts` — Plans & pricing:**
-  - [ ] `plans` — id, name, displayName, tagline, monthlyPriceUsd, annualPriceUsd, isHighlighted, ctaLabel, ctaAction (signup/contact_sales), status (active/hidden), orderIndex, createdAt, updatedAt
-  - [ ] `plan_limits` — id, planId, limitKey, limitValue (int; -1 = unlimited)
-  - [ ] `plan_feature_flags` — id, planId, featureKey, isEnabled
-  - [ ] `plan_bullets` — id, planId, text, isIncluded, orderIndex
-  - [ ] `user_plans` — id, userId, planId, planOverrideId, status (active/cancelled/past_due), currentPeriodStart, currentPeriodEnd, stripeCustomerId, stripeSubscriptionId, createdAt, updatedAt
-  - [ ] `plan_overrides` — id, userId, planId, reason, expiresAt, createdByAdminId, createdAt
 
   **`notifications.ts` — Notifications & reminders:**
   - [ ] `notification_preferences` — id, userId, bookingConfirmationEmail, bookingNotificationEmail, reminderEmail24h, reminderEmail1h, cancellationEmail, rescheduleEmail, fromName, replyToEmail, updatedAt
@@ -262,11 +254,6 @@ Phase 19 →  QA & Launch Prep
 - [ ] Social proof bar — e.g. "Used by freelancers and growing teams"
 - [ ] Features section — 6 cards (Smart Booking Links, Calendar Sync, Custom Questions, Reminders, Video Conferencing, Meetings Dashboard)
 - [ ] How It Works — 4 steps (Sign Up → Connect Calendar → Create Event Type → Share Link)
-- [ ] Pricing section — plan cards fetched dynamically from `GET /api/plans` (not hardcoded)
-  - [ ] Monthly / Annual toggle (state saved in localStorage)
-  - [ ] Free / Standard / Pro plan cards rendered from API response
-  - [ ] "All plans include" row
-  - [ ] Pricing FAQ accordion
 - [ ] Comparison table — Schedica vs Calendly vs Cal.com
 - [ ] Testimonials — 3 static cards
 - [ ] General FAQ — accordion (6–8 questions)
@@ -274,7 +261,6 @@ Phase 19 →  QA & Launch Prep
 - [ ] Footer — Product, Company, Legal, Social links
 
 **Additional pages:**
-- [ ] `/pricing` — standalone pricing page (reuse pricing section component)
 - [ ] `/privacy` — Privacy Policy (required before launch)
 - [ ] `/terms` — Terms of Service (required before launch)
 - [ ] `/cookies` — Cookie Policy
@@ -599,7 +585,7 @@ Phase 19 →  QA & Launch Prep
 - [ ] Host brand color applied as accent color on booking page
 - [ ] Host profile photo shown (circular avatar)
 - [ ] Custom welcome / confirmation message shown after booking
-- [ ] "Powered by Schedica" badge (shown on free plan, hidden on paid)
+- [ ] No "Powered by Schedica" badge (open source — no branding shown)
 
 **Performance:**
 - [ ] Slot calculation is done server-side (Server Component or API route)
@@ -646,7 +632,6 @@ Phase 19 →  QA & Launch Prep
 
 **Booking Status Flow:**
 - [ ] `confirmed` — successfully booked
-- [ ] `pending_payment` — awaiting payment (Phase 3)
 - [ ] `cancelled` — cancelled by host or invitee
 - [ ] `rescheduled` — rescheduled (original booking links to new one)
 - [ ] `no_show` — host marked invitee as no-show
@@ -939,53 +924,20 @@ Phase 19 →  QA & Launch Prep
 
 ---
 
-## Phase 18 — Billing & Plan Enforcement
+## Phase 18 — Open Source Configuration
 
-**Goal:** Plan limits are enforced server-side on every relevant action. Upgrade prompts appear when limits are hit. Admin can configure plans. Public pricing page fetches data from the API.
+**Goal:** Platform admins can manage users, view bookings, and configure the platform. No billing or plan enforcement — all features are available to all users.
 
-**Reference doc:** [features/billing.md](./features/billing.md)
+**Reference doc:** [features/billing.md](./features/billing.md) (open source — no pricing)
 
 ### Tasks
 
-**Database seed (plans already in schema from Phase 1):**
-- [ ] Seed `plans` table: Free, Standard, Pro/Teams (name, displayName, monthlyPriceUsd, annualPriceUsd, status, orderIndex)
-- [ ] Seed `plan_limits` for each plan: custom_questions, date_overrides_per_month, booking_history_days
-- [ ] Seed `plan_feature_flags` for each plan: branding_removal, custom_email_from, analytics, webhooks, payments
-- [ ] Seed `plan_bullets` (marketing bullet points per plan for pricing page)
-- [ ] Assign all existing users to Free plan in `user_plans` on first migration
+- [ ] No billing schema or plan enforcement needed — skip billing-related database tables
+- [ ] All feature limits removed — unlimited event types, unlimited custom questions, unlimited date overrides for all users
+- [ ] "Powered by Schedica" branding is not shown on any install (open source)
+- [ ] No `/pricing` page, no upgrade prompts, no plan gates
 
-**Plan Enforcement Utility:**
-- [ ] `getActivePlan(userId)` — reads `user_plans`, resolves override if non-expired
-- [ ] `checkLimit(userId, limitKey)` → `{ allowed, current, max }` — used before any limit-gated action
-- [ ] `checkFeatureFlag(userId, featureKey)` → boolean — used before feature-gated actions
-- [ ] Enforce `custom_questions` limit on question add API
-- [ ] Enforce `date_overrides_per_month` on date override create API
-- [ ] Enforce `branding_removal` flag on booking page render (server component)
-- [ ] Enforce `custom_email_from` flag on notification preference save
-
-**API Routes:**
-- [ ] `GET /api/plans` — public, no auth — returns all active plans with limits, flags, and bullets (for pricing page)
-- [ ] `GET /api/user/plan` — returns current user's plan + usage stats
-- [ ] `GET /api/user/usage` — returns current usage vs plan limits
-
-**Upgrade Prompt:**
-- [ ] On `PLAN_LIMIT_EXCEEDED` API error (403): frontend shows upgrade modal
-- [ ] Modal shows: which limit was hit, what the next plan includes, [View Plans] + [Upgrade Now] buttons
-- [ ] [Upgrade Now] links to `/settings/billing` (full implementation Phase 3 — Stripe)
-
-**UI:**
-- [ ] `/settings/billing` — current plan name, usage stats per limit, "Upgrade" button (disabled in MVP, links to contact)
-- [ ] Pricing page (`/pricing`) fetches from `GET /api/plans` dynamically — not hardcoded
-
-**Admin Plan Config (in Phase 19 Admin Panel):**
-- [ ] `/admin/plans` — list all plans with Edit buttons
-- [ ] `/admin/plans/:id/edit` — edit pricing, limits, feature flags, bullet points, visibility
-- [ ] `GET/PATCH /api/admin/plans/:id` — admin plan update endpoints
-- [ ] `PATCH /api/admin/plans/:id/bullets` — reorder/add/remove bullets
-- [ ] `POST /api/admin/users/:id/plan-override` — set manual plan override for a user
-- [ ] `DELETE /api/admin/users/:id/plan-override` — remove override
-
-**Done when:** Free plan users cannot add more than 3 questions; upgrade prompt appears when they try. Pricing page renders from the API. Admin can edit plan limits without a code deployment.
+**Done when:** Confirmed that no plan checks exist in the codebase and all features work without any limit checks.
 
 ---
 
@@ -1026,7 +978,6 @@ Phase 19 →  QA & Launch Prep
 - [ ] View job error / stack trace
 
 **Platform Settings:**
-- [ ] Manage plan features and limits (for future billing integration)
 - [ ] Email template preview
 
 **Done when:** Platform admins can access `/admin`, manage users (ban, impersonate), view all bookings, and monitor / retry failed pg-boss jobs.
