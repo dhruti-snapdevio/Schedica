@@ -5,6 +5,7 @@
 
 ---
 
+
 ## Table of Contents
 
 1. [Local Machine Requirements](#1-local-machine-requirements)
@@ -705,3 +706,113 @@ Complete every item below before starting Phase 0 of [development-plan.md](./dev
 
 > **Once all items above are checked, start [development-plan.md](./development-plan.md) from Phase 0.**
 > Each phase in that document assumes everything in this file is already in place.
+
+---
+
+> [!NOTE]
+>
+> ## All Tools & Credentials — Master Reference
+>
+> Every external tool the project needs, why it is needed, which credentials to collect, and where to get them.
+>
+> ---
+>
+> ### 1. Google Cloud Console
+>
+> | Field | Detail |
+> |-------|--------|
+> | **Why needed** | Sign in with Google (OAuth login) · Read/write Google Calendar (availability sync, booking write) · Auto-generate Google Meet link per booking |
+> | **Credentials needed** | `GOOGLE_CLIENT_ID` · `GOOGLE_CLIENT_SECRET` |
+> | **APIs to enable** | Google Calendar API · Google People API |
+> | **OAuth scopes** | `email` · `profile` · `openid` · `calendar` · `calendar.events` |
+> | **Where to get** | [console.cloud.google.com](https://console.cloud.google.com) → APIs & Services → Credentials |
+> | **Cost** | Free |
+>
+> ---
+>
+> ### 2. Microsoft Azure — App Registration
+>
+> | Field | Detail |
+> |-------|--------|
+> | **Why needed** | Read/write Outlook calendar · Auto-generate Microsoft Teams meeting link per booking · *(NOT for user login — calendar integration only)* |
+> | **Credentials needed** | `MICROSOFT_CLIENT_ID` · `MICROSOFT_CLIENT_SECRET` |
+> | **Graph API permissions** | `Calendars.ReadWrite` · `OnlineMeetings.ReadWrite` · `User.Read` |
+> | **Where to get** | [portal.azure.com](https://portal.azure.com) → App registrations → New registration |
+> | **Cost** | Free |
+>
+> ---
+>
+> ### 3. Zoom Developer Portal
+>
+> | Field | Detail |
+> |-------|--------|
+> | **Why needed** | Auto-generate a unique Zoom meeting link for every booking |
+> | **Credentials needed** | `ZOOM_CLIENT_ID` · `ZOOM_CLIENT_SECRET` · `ZOOM_REDIRECT_URI` |
+> | **Scopes needed** | `meeting:write` · `user:read` |
+> | **Where to get** | [marketplace.zoom.us](https://marketplace.zoom.us) → Develop → Create App → OAuth |
+> | **Cost** | Free |
+>
+> ---
+>
+> ### 4. S3-Compatible File Storage
+>
+> | Field | Detail |
+> |-------|--------|
+> | **Why needed** | Store user-uploaded files — profile photos, organisation logos, banner images |
+> | **Credentials needed** | `S3_ACCESS_KEY_ID` · `S3_SECRET_ACCESS_KEY` · `S3_REGION` · `S3_BUCKET_NAME` · `S3_ENDPOINT` *(blank for AWS)* |
+> | **Provider options** | AWS S3 · Cloudflare R2 · Backblaze B2 · MinIO (self-hosted) |
+> | **Bucket setting** | Block all public access ON — files served via presigned URLs only |
+> | **Cost** | Free tier on all providers |
+>
+> ---
+>
+> ### 5. SMTP Email
+>
+> | Field | Detail |
+> |-------|--------|
+> | **Why needed** | Send booking confirmations · Send 24h and 1h reminder emails · Send password reset emails · Send magic sign-in links · Send welcome emails |
+> | **Credentials needed** | `SMTP_HOST` · `SMTP_PORT` · `SMTP_USER` · `SMTP_PASS` · `SMTP_FROM_EMAIL` · `SMTP_FROM_NAME` |
+> | **Provider options** | Gmail SMTP · Outlook SMTP · Company mail server · Mailhog *(local dev only)* |
+> | **Cost** | Free |
+>
+> ---
+>
+> ### 6. PostgreSQL Database
+>
+> | Field | Detail |
+> |-------|--------|
+> | **Why needed** | Main application database — stores users, bookings, event types, availability schedules, background jobs |
+> | **Credentials needed** | `DATABASE_URL` = `postgresql://user:password@host:5432/dbname` |
+> | **Options** | Local install · Railway · Supabase · Neon · Any PostgreSQL 16+ host |
+> | **Cost** | Free (local) · Free tier on cloud providers |
+>
+> ---
+>
+> ### Complete Credentials Summary
+>
+> | # | Variable | Service | Required For |
+> |---|----------|---------|-------------|
+> | 1 | `GOOGLE_CLIENT_ID` | Google Cloud | Google sign-in + Calendar API |
+> | 2 | `GOOGLE_CLIENT_SECRET` | Google Cloud | Google sign-in + Calendar API |
+> | 3 | `MICROSOFT_CLIENT_ID` | Azure Portal | Outlook calendar + Teams |
+> | 4 | `MICROSOFT_CLIENT_SECRET` | Azure Portal | Outlook calendar + Teams |
+> | 5 | `ZOOM_CLIENT_ID` | Zoom Developer | Zoom meeting links |
+> | 6 | `ZOOM_CLIENT_SECRET` | Zoom Developer | Zoom meeting links |
+> | 7 | `ZOOM_REDIRECT_URI` | Zoom Developer | Zoom OAuth callback |
+> | 8 | `S3_ACCESS_KEY_ID` | Storage provider | File uploads |
+> | 9 | `S3_SECRET_ACCESS_KEY` | Storage provider | File uploads |
+> | 10 | `S3_REGION` | Storage provider | File uploads |
+> | 11 | `S3_BUCKET_NAME` | Storage provider | File uploads |
+> | 12 | `S3_ENDPOINT` | Storage provider | File uploads *(blank for AWS S3)* |
+> | 13 | `SMTP_HOST` | Email server | Sending all emails |
+> | 14 | `SMTP_PORT` | Email server | Sending all emails |
+> | 15 | `SMTP_USER` | Email server | Sending all emails |
+> | 16 | `SMTP_PASS` | Email server | Sending all emails |
+> | 17 | `SMTP_FROM_EMAIL` | Email server | Sender address shown to users |
+> | 18 | `SMTP_FROM_NAME` | Email server | Sender name shown to users |
+> | 19 | `DATABASE_URL` | PostgreSQL | Application database |
+> | 20 | `BETTER_AUTH_SECRET` | Generated locally | Session signing — `openssl rand -base64 32` |
+> | 21 | `BETTER_AUTH_URL` | App URL | Auth callbacks — `http://localhost:3000` in dev |
+> | 22 | `NEXT_PUBLIC_APP_URL` | App URL | Public-facing links in emails and booking pages |
+>
+> **Total: 6 services · 22 environment variables**

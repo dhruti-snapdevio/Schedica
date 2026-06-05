@@ -285,7 +285,6 @@ Two distinct phone call variants exist:
 - Example: "Consultation Call — 30 min / 45 min / 60 min"
 - Invitee selects duration on the booking page before seeing available slots
 - Availability windows recalculate based on selected duration
-- Availability windows recalculate based on selected duration
 
 ### Cancellation Policy Text and Enforcement
 - Hosts can add a cancellation policy notice shown on the booking page and in confirmation emails
